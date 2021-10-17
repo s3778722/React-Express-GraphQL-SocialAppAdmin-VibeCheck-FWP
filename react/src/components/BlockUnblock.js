@@ -16,7 +16,6 @@ const BlockUnblock = ({ users, setUsers }) => {
     });
     setUsers(newList);
   };
-  console.log(users);
 
   const handleUnblock = async (event) => {
     event.preventDefault();
@@ -32,7 +31,6 @@ const BlockUnblock = ({ users, setUsers }) => {
     });
     setUsers(newList);
   };
-  console.log(users);
 
   return (
     <div className="bg">

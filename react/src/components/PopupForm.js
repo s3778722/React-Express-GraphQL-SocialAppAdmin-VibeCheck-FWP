@@ -4,20 +4,18 @@ import Button from "react-bootstrap/Button";
 import { updateUser } from "../data/repository";
 
 const PopupForm = (props) => {
-  console.log(props.users);
   const findSelectedUser = () => {
     return props.users.find((u) => u.email === props.currentEmail);
   };
-  console.log(findSelectedUser());
+
   //useState hook for showing the modal popup
   const [show, setShow] = useState(false);
 
   //event handler to close the modal pop up
   const handleClose = () => setShow(false);
-  console.log(props.currentEmail);
+
   //event handler to show the modal pop up
   const handleShow = (event) => {
-    console.log(event.target.value);
     setShow(true);
     setAlertMessage(null);
   };
@@ -27,7 +25,7 @@ const PopupForm = (props) => {
     email: findSelectedUser().email,
     password: findSelectedUser().password_hash,
   });
-  console.log(fields);
+
   //useState hook for the alert message
   const [alertMessage, setAlertMessage] = useState(null);
 
@@ -114,7 +112,7 @@ const PopupForm = (props) => {
       setSuccess(false);
     } else {
       const updatedUser = await updateUser(trimmedFields);
-      console.log(updatedUser);
+
       const newList = [...props.users];
 
       newList.forEach((u) => {
@@ -128,14 +126,13 @@ const PopupForm = (props) => {
       newFields.password = updatedUser.password_hash;
       setFields(newFields);
       props.setUsers(newList);
-      console.log(updatedUser);
+
       const messageSuccess = "Edit is saved.";
       setAlertMessage(messageSuccess);
       alert(messageSuccess);
       setSuccess(true);
     }
   };
-  console.log(props.users);
 
   //function to determining the alert message type and message content
   const showAlertMessage = (message) => {

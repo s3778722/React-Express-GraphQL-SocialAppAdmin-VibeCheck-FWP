@@ -30,7 +30,7 @@ const DeletePost = ({ users, setUsers }) => {
   const handleDeletePost = async (event) => {
     event.preventDefault();
     //log the user out
-    const resPost = await updatePost(
+    await updatePost(
       parseInt(event.target.value),
       "[**** This post has been deleted by the admin***]"
     );
@@ -40,8 +40,8 @@ const DeletePost = ({ users, setUsers }) => {
       if (p.post_id === parseInt(event.target.value)) {
         p.text = "[**** This post has been deleted by the admin***]";
       }
+      return tmpPosts;
     });
-
     setPosts(tmpPosts);
   };
 

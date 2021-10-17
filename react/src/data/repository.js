@@ -24,6 +24,52 @@ async function getUsers() {
   return data.all_users;
 }
 
+async function getPosts() {
+  // Simply query with no parameters.
+  const query = gql`
+    {
+      all_posts {
+        post_id
+        text
+        userEmail
+        imgUrl
+        date
+        dateData
+        comments {
+          comment_id
+          text
+          date
+          userEmail
+          postPostId
+        }
+      }
+    }
+  `;
+
+  const data = await request(GRAPH_QL_URL, query);
+
+  return data.all_posts;
+}
+
+async function getComments() {
+  // Simply query with no parameters.
+  const query = gql`
+    {
+      all_comments {
+        comment_id
+        text
+        date
+        userEmail
+        postPostId
+      }
+    }
+  `;
+
+  const data = await request(GRAPH_QL_URL, query);
+
+  return data.all_posts;
+}
+
 async function deleteUser(email) {
   const query = gql`
     mutation ($email: String) {
@@ -56,6 +102,47 @@ async function updateUserIsBlocked(email, isBlocked) {
   return data.update_user_isblocked;
 }
 
+async function updatePost(post_id, text) {
+  const query = gql`
+    mutation ($post_id: Int, $text: String) {
+      update_post(post_id: $post_id, text: $text) {
+        post_id
+        text
+        userEmail
+        imgUrl
+        date
+        dateData
+      }
+    }
+  `;
+
+  const variables = { post_id, text };
+
+  const data = await request(GRAPH_QL_URL, query, variables);
+
+  return data.update_post;
+}
+
+async function updateComment(comment_id, text) {
+  const query = gql`
+    mutation ($comment_id: Int, $text: String) {
+      update_comment(comment_id: $comment_id, text: $text) {
+        comment_id
+        text
+        date
+        userEmail
+        postPostId
+      }
+    }
+  `;
+
+  const variables = { comment_id, text };
+
+  const data = await request(GRAPH_QL_URL, query, variables);
+
+  return data.update_comment;
+}
+
 async function updateUser(user) {
   const query = gql`
     mutation ($email: String, $name: String, $password: String) {
@@ -74,4 +161,13 @@ async function updateUser(user) {
   return data.update_user;
 }
 
-export { getUsers, deleteUser, updateUserIsBlocked, updateUser };
+export {
+  getUsers,
+  getPosts,
+  getComments,
+  deleteUser,
+  updateUserIsBlocked,
+  updateUser,
+  updatePost,
+  updateComment,
+};

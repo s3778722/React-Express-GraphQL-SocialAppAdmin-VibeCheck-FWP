@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard";
 import DeleteUser from "./components/DeleteUser";
 import BlockUnblock from "./components/BlockUnblock";
 import ModifyUser from "./components/ModifyUser";
+import DeletePost from "./components/DeletePost";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getUsers } from "./data/repository";
@@ -38,6 +39,10 @@ function App() {
           <Route exact path="/modify-user-details">
             <Navbar />
             <ModifyUser users={users} setUsers={setUsers} />
+          </Route>
+          <Route exact path="/delete-post">
+            <Navbar />
+            <DeletePost users={users} setUsers={setUsers} />
           </Route>
         </Switch>
       </Router>

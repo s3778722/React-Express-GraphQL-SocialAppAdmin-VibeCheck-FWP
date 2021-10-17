@@ -23,6 +23,27 @@ graphql.schema = buildSchema(`
     isBlocked: Boolean
   }
 
+  type Post {
+    post_id: Int
+    text: String,
+    userEmail: String,
+    imgUrl: String,
+    date: String,
+    dateData: String,
+    user: [User]
+    comments: [Comment]
+  }
+
+  type Comment {
+    comment_id: Int
+    text: String,
+    date: String,
+    userEmail: String
+    postPostId: Int,
+    post: [Post],
+    user: [User]
+  }
+
   input UserInput {
     email: String,
     name: String,
@@ -32,14 +53,17 @@ graphql.schema = buildSchema(`
   # Queries (read-only operations).
   type Query {
     all_users: [User],
+    all_posts: [Post],
+    all_comments: [Comment],
   }
 
   # Mutations (modify data in the underlying data-source, i.e., the database).
   type Mutation {
     update_user_isblocked(email: String, isBlocked: Boolean): User,
     update_user(input: UserInput): User,
+    update_post(post_id: Int, text: String): Post,
+    update_comment(comment_id: Int, text: String): Comment,
     delete_user(email: String): Boolean
-
   }
 `);
 
@@ -48,6 +72,14 @@ graphql.root = {
   // Queries.
   all_users: async () => {
     return await db.user.findAll();
+  },
+
+  all_posts: async () => {
+    return await db.post.findAll({ include: [db.comment, db.user] });
+  },
+
+  all_comments: async () => {
+    return await db.comment.findAll({ include: [db.post, db.user] });
   },
 
   // Mutations.
@@ -72,6 +104,26 @@ graphql.root = {
 
     return user;
   },
+  update_post: async (args) => {
+    const post = await db.post.findByPk(args.post_id);
+
+    // Update owner fields.
+    post.text = args.text;
+
+    await post.save();
+
+    return post;
+  },
+  update_comment: async (args) => {
+    const comment = await db.comment.findByPk(args.comment_id);
+
+    // Update owner fields.
+    comment.text = args.text;
+
+    await comment.save();
+
+    return comment;
+  },
 
   update_user: async (args) => {
     const user = await db.user.findByPk(args.input.email);
@@ -94,61 +146,3 @@ graphql.root = {
 };
 
 module.exports = graphql;
-
-// Below are some sample queries that can be used to test GraphQL in GraphiQL.
-// Access the GraphiQL web-interface when the server is running here: http://localhost:4000/graphql
-/*
-
-{
-  all_owners {
-    email,
-    first_name,
-    last_name,
-    pets {
-      pet_id,
-    	name
-    }
-  }
-}
-
-{
-  owner(email: "matthew@rmit.edu.au") {
-    email,
-    first_name,
-    last_name
-  }
-}
-
-{
-  owner_exists(email: "matthew@rmit.edu.au")
-}
-
-mutation {
-  create_owner(input: {
-    email: "newuser@rmit.edu.au",
-    first_name: "New",
-    last_name: "User"
-  }) {
-    email,
-    first_name,
-    last_name
-  }
-}
-
-mutation {
-  update_owner(input: {
-    email: "matthew@rmit.edu.au",
-    first_name: "Matthew",
-    last_name: "Bolger"
-  }) {
-    email,
-    first_name,
-    last_name
-  }
-}
-
-mutation {
-  delete_owner(email: "newuser@rmit.edu.au")
-}
-
-*/

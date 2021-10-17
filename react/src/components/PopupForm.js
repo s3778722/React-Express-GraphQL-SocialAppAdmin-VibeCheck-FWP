@@ -114,6 +114,7 @@ const PopupForm = (props) => {
       setSuccess(false);
     } else {
       const updatedUser = await updateUser(trimmedFields);
+      console.log(updatedUser);
       const newList = [...props.users];
 
       newList.forEach((u) => {

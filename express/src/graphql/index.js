@@ -88,7 +88,6 @@ graphql.root = {
 
     if (user === null) return false;
 
-    // First remove all pets owned by the owner.
     await user.destroy();
 
     return true;
@@ -97,7 +96,6 @@ graphql.root = {
   update_user_isblocked: async (args) => {
     const user = await db.user.findByPk(args.email);
 
-    // Update owner fields.
     user.isBlocked = args.isBlocked;
 
     await user.save();
@@ -107,7 +105,6 @@ graphql.root = {
   update_post: async (args) => {
     const post = await db.post.findByPk(args.post_id);
 
-    // Update owner fields.
     post.text = args.text;
 
     await post.save();
@@ -117,7 +114,6 @@ graphql.root = {
   update_comment: async (args) => {
     const comment = await db.comment.findByPk(args.comment_id);
 
-    // Update owner fields.
     comment.text = args.text;
 
     await comment.save();

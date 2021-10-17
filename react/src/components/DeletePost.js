@@ -8,9 +8,11 @@ import {
 import { useState, useEffect } from "react";
 
 const DeletePost = ({ users, setUsers }) => {
+  //useState hooks
   const [posts, setPosts] = useState([]);
   const [comments, setComments] = useState([]);
 
+  //useEffects hooks to load the latest posts from database
   useEffect(() => {
     const loadPosts = async () => {
       const currentPosts = await getPosts();
@@ -19,14 +21,9 @@ const DeletePost = ({ users, setUsers }) => {
     loadPosts();
   }, [comments]);
 
-  useEffect(() => {
-    const loadComments = async () => {
-      const currentComments = await getComments();
-      setComments(currentComments);
-    };
-    loadComments();
-  }, [posts]);
+  //useEffects hooks to load the latest comments from database
 
+  //event handler for deleting a post
   const handleDeletePost = async (event) => {
     event.preventDefault();
     //log the user out
@@ -45,6 +42,7 @@ const DeletePost = ({ users, setUsers }) => {
     setPosts(tmpPosts);
   };
 
+  //event handler for deleting a comment
   const handleDeleteComment = async (event) => {
     event.preventDefault();
     //log the user out

@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { updateUser } from "../data/repository";
 
 const PopupForm = (props) => {
+  //select the correct user from the button
   const findSelectedUser = () => {
     return props.users.find((u) => u.email === props.currentEmail);
   };
@@ -74,12 +75,6 @@ const PopupForm = (props) => {
 
     const trimmedFields = trimFields();
 
-    //if users is null, return empty array
-    /*
-    if (users === null) {
-      users = [];
-    }*/
-
     //if fields are empty, prompt to fill in.
     if (
       !trimmedFields.name ||
@@ -111,10 +106,11 @@ const PopupForm = (props) => {
       alert("Invalid password format");
       setSuccess(false);
     } else {
+      //update user in database
       const updatedUser = await updateUser(trimmedFields);
-
       const newList = [...props.users];
 
+      //update user data for state
       newList.forEach((u) => {
         if (u.email === props.currentEmail) {
           u.name = updatedUser.name;

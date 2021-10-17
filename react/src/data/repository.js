@@ -3,7 +3,7 @@ import { request, gql } from "graphql-request";
 // --- Constants ----------------------------------------------------------------------------------
 const GRAPH_QL_URL = "http://localhost:4000/graphql";
 
-// --- Owner ---------------------------------------------------------------------------------------
+// --- User ---------------------------------------------------------------------------------------
 async function getUsers() {
   // Simply query with no parameters.
   const query = gql`
@@ -23,9 +23,9 @@ async function getUsers() {
 
   return data.all_users;
 }
-
+// --- Post ---------------------------------------------------------------------------------------
 async function getPosts() {
-  // Simply query with no parameters.
+  // Simply query with join data
   const query = gql`
     {
       all_posts {
@@ -51,6 +51,7 @@ async function getPosts() {
   return data.all_posts;
 }
 
+// --- Comment ---------------------------------------------------------------------------------------
 async function getComments() {
   // Simply query with no parameters.
   const query = gql`
@@ -67,9 +68,10 @@ async function getComments() {
 
   const data = await request(GRAPH_QL_URL, query);
 
-  return data.all_posts;
+  return data.all_comments;
 }
 
+//delete user with mutation for API
 async function deleteUser(email) {
   const query = gql`
     mutation ($email: String) {
@@ -84,6 +86,7 @@ async function deleteUser(email) {
   return data.delete_user;
 }
 
+//Update user is blocked with mutation for API
 async function updateUserIsBlocked(email, isBlocked) {
   const query = gql`
     mutation ($email: String, $isBlocked: Boolean) {
@@ -102,6 +105,7 @@ async function updateUserIsBlocked(email, isBlocked) {
   return data.update_user_isblocked;
 }
 
+//Update post with mutation for API
 async function updatePost(post_id, text) {
   const query = gql`
     mutation ($post_id: Int, $text: String) {
@@ -122,7 +126,7 @@ async function updatePost(post_id, text) {
 
   return data.update_post;
 }
-
+//Update comment with mutation for API
 async function updateComment(comment_id, text) {
   const query = gql`
     mutation ($comment_id: Int, $text: String) {
@@ -143,6 +147,7 @@ async function updateComment(comment_id, text) {
   return data.update_comment;
 }
 
+//Update user details with mutation for API
 async function updateUser(user) {
   const query = gql`
     mutation ($email: String, $name: String, $password: String) {

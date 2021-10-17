@@ -2,13 +2,13 @@ import React from "react";
 import { deleteUser } from "../data/repository";
 
 const DeleteUser = ({ users, setUsers }) => {
+  //Handler for delete user
   const handleDelete = async (event) => {
     event.preventDefault();
-    //log the user out
+    //Delete user from database with cascade
     await deleteUser(event.target.value);
-
+    //Filter out the removed user
     const removeUser = users.filter((u) => u.email !== event.target.value);
-
     setUsers(removeUser);
   };
 

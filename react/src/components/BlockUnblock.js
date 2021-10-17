@@ -4,11 +4,11 @@ import { updateUserIsBlocked } from "../data/repository";
 const BlockUnblock = ({ users, setUsers }) => {
   const handleBlock = async (event) => {
     event.preventDefault();
-    //log the user out
+    //update block in the database
     await updateUserIsBlocked(event.target.value, true);
 
     const newList = [...users];
-
+    //assign the user.isBlocked boolean to true, to block
     newList.forEach((u) => {
       if (u.email === event.target.value) {
         u.isBlocked = true;
@@ -19,11 +19,11 @@ const BlockUnblock = ({ users, setUsers }) => {
 
   const handleUnblock = async (event) => {
     event.preventDefault();
-    //log the user out
+    //update block in the database
     await updateUserIsBlocked(event.target.value, false);
 
     const newList = [...users];
-
+    //assign the user.isBlocked boolean to false, to unblock
     newList.forEach((u) => {
       if (u.email === event.target.value) {
         u.isBlocked = false;

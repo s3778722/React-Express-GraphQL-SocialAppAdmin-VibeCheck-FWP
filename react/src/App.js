@@ -12,6 +12,7 @@ import { getUsers } from "./data/repository";
 function App() {
   const [users, setUsers] = useState(null);
 
+  //useEffect hook to sync users with database
   useEffect(() => {
     const loadUsers = async () => {
       const currentUsers = await getUsers();
